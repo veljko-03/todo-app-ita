@@ -20,9 +20,22 @@
     </div>
 
     <div class="task-actions">
-      <button v-if="!task.completed" @click="$emit('complete', task.id)">Complete</button>
+      <button
+        v-if="!task.completed"
+        class="icon-button complete-button"
+        @click="$emit('complete', task.id)"
+        title="Complete task"
+      >
+        <img src="/check.svg" alt="Complete" />
+      </button>
 
-      <button class="delete-button" @click="$emit('delete', task.id)">Delete</button>
+      <button
+        class="icon-button delete-button"
+        @click="$emit('delete', task.id)"
+        title="Delete task"
+      >
+        <img src="/trash.svg" alt="Delete" />
+      </button>
     </div>
   </div>
 </template>
@@ -82,20 +95,23 @@ export default {
   gap: 10px;
 }
 
-button {
-  padding: 10px 15px;
+.icon-button {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background-color: #42b983;
-  color: white;
 }
 
-.delete-button {
-  background-color: #e74c3c;
+.icon-button img {
+  width: 22px;
+  height: 22px;
 }
 
-button:hover {
-  opacity: 0.85;
+.icon-button:hover {
+  opacity: 0.8;
 }
 </style>
