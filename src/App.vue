@@ -11,11 +11,45 @@
 
       <AddTask @add-task="addTask" />
 
-      <p v-if="tasks.length === 0" class="no-tasks">No tasks available.</p>
+      <!-- Filters -->
+      <div class="filters">
+        <div class="filter-group">
+          <span class="filter-label">Status</span>
+
+          <button :class="{ active: statusFilter === 'All' }" @click="statusFilter = 'All'">
+            All
+          </button>
+
+          <button :class="{ active: statusFilter === 'Active' }" @click="statusFilter = 'Active'">
+            Active
+          </button>
+
+          <button
+            :class="{ active: statusFilter === 'Completed' }"
+            @click="statusFilter = 'Completed'"
+          >
+            Completed
+          </button>
+        </div>
+
+        <div class="filter-group">
+          <span class="filter-label">Priority</span>
+
+          <select v-model="priorityFilter">
+            <option value="All">All priorities</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Task list -->
+      <p v-if="filteredTasks.length === 0" class="no-tasks">No tasks available.</p>
 
       <div v-else class="todo-list">
         <TaskItem
-          v-for="task in tasks"
+          v-for="task in filteredTasks"
           :key="task.id"
           :task="task"
           @complete="completeTask"
@@ -60,7 +94,26 @@ export default {
           priority: 'Low',
         },
       ],
+
+      statusFilter: 'All',
+      priorityFilter: 'All',
     }
+  },
+
+  computed: {
+    filteredTasks() {
+      return this.tasks.filter((task) => {
+        const matchesStatus =
+          this.statusFilter === 'All' ||
+          (this.statusFilter === 'Active' && !task.completed) ||
+          (this.statusFilter === 'Completed' && task.completed)
+
+        const matchesPriority =
+          this.priorityFilter === 'All' || task.priority === this.priorityFilter
+
+        return matchesStatus && matchesPriority
+      })
+    },
   },
 
   methods: {
@@ -143,6 +196,75 @@ h1 {
   font-size: 16px;
 }
 
+/* Filters */
+
+.filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+  padding: 10px 12px;
+  background: white;
+  border: 1px solid #e8ebf1;
+  border-radius: 14px;
+  box-shadow: 0 5px 20px rgba(31, 41, 55, 0.04);
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filter-label {
+  margin-right: 6px;
+  color: #8a94a6;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filter-group button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #737d90;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.filter-group button:hover {
+  background: #f3f4f8;
+  color: #172033;
+}
+
+.filter-group button.active {
+  background: #6366f1;
+  color: white;
+}
+
+.filter-group select {
+  padding: 8px 10px;
+  border: 1px solid #e3e7ef;
+  border-radius: 8px;
+  background: #f8f9fc;
+  color: #4b5563;
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+}
+
+.filter-group select:focus {
+  border-color: #6366f1;
+}
+
+/* Tasks */
+
 .todo-list {
   display: flex;
   flex-direction: column;
@@ -156,5 +278,17 @@ h1 {
   background: white;
   border: 1px solid #e8ebf1;
   border-radius: 16px;
+}
+
+@media (max-width: 650px) {
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-group {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 }
 </style>
