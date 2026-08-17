@@ -4,8 +4,16 @@
 
     <AddTask @add-task="addTask" />
 
-    <div class="todo-list">
-      <TaskItem v-for="task in tasks" :key="task.id" :task="task" />
+    <p v-if="tasks.length === 0" class="no-tasks">No tasks available.</p>
+
+    <div v-else class="todo-list">
+      <TaskItem
+        v-for="task in tasks"
+        :key="task.id"
+        :task="task"
+        @complete="completeTask"
+        @delete="deleteTask"
+      />
     </div>
   </div>
 </template>
@@ -58,6 +66,18 @@ export default {
 
       this.tasks.push(newTask)
     },
+
+    completeTask(taskId) {
+      const task = this.tasks.find((task) => task.id === taskId)
+
+      if (task) {
+        task.completed = true
+      }
+    },
+
+    deleteTask(taskId) {
+      this.tasks = this.tasks.filter((task) => task.id !== taskId)
+    },
   },
 }
 </script>
@@ -79,5 +99,12 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+
+.no-tasks {
+  text-align: center;
+  font-size: 18px;
+  color: #777;
+  padding: 30px;
 }
 </style>
