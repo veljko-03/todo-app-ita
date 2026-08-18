@@ -77,19 +77,19 @@ export default {
       tasks: [
         {
           id: 1,
-          title: 'Learn Vue basics',
+          title: 'Call in sick',
           completed: true,
           priority: 'High',
         },
         {
           id: 2,
-          title: 'Practice Vue directives',
+          title: 'Get ready for a party',
           completed: false,
           priority: 'Medium',
         },
         {
           id: 3,
-          title: 'Create To Do App',
+          title: 'Grocery shopping',
           completed: false,
           priority: 'Low',
         },
