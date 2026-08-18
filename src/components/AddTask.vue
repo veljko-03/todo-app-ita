@@ -91,9 +91,8 @@ select {
 
 input:focus,
 select:focus {
-  border-color: #6366f1;
+  border-color: var(--theme-color);
   background: white;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
 input::placeholder {
@@ -108,7 +107,7 @@ button {
   gap: 7px;
   border: none;
   border-radius: 10px;
-  background: #6366f1;
+  background: var(--theme-color);
   color: white;
   font-size: 14px;
   font-weight: 600;
@@ -117,7 +116,7 @@ button {
 }
 
 button:hover {
-  background: #5558e8;
+  opacity: 0.9;
   transform: translateY(-1px);
 }
 

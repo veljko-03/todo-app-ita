@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :style="{ '--theme-color': themeColor }">
     <div class="app-container">
       <header class="app-header">
         <div>
@@ -7,6 +7,12 @@
           <h1>To Do List</h1>
           <p class="subtitle">Keep track of what needs to get done.</p>
         </div>
+
+        <label class="theme-picker">
+          <span>Theme</span>
+
+          <input v-model="themeColor" type="color" />
+        </label>
       </header>
 
       <AddTask @add-task="addTask" />
@@ -76,6 +82,8 @@ export default {
 
       statusFilter: 'All',
       priorityFilter: 'All',
+
+      themeColor: localStorage.getItem('themeColor') || '#6366f1',
     }
   },
 
@@ -101,6 +109,10 @@ export default {
         localStorage.setItem('tasks', JSON.stringify(newTasks))
       },
       deep: true,
+    },
+
+    themeColor(newColor) {
+      localStorage.setItem('themeColor', newColor)
     },
   },
 
@@ -194,7 +206,7 @@ body {
 
 .eyebrow {
   margin: 0 0 8px;
-  color: #6366f1;
+  color: var(--theme-color);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.5px;
@@ -211,6 +223,39 @@ h1 {
   margin: 10px 0 0;
   color: #7a8499;
   font-size: 16px;
+}
+
+.app-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.theme-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px 6px 12px;
+  background: white;
+  border: 1px solid #e8ebf1;
+  border-radius: 10px;
+  color: #737d90;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 5px 20px rgba(31, 41, 55, 0.04);
+  cursor: pointer;
+}
+
+.theme-picker input {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  cursor: pointer;
 }
 
 /* Filters */
@@ -261,7 +306,7 @@ h1 {
 }
 
 .filter-group button.active {
-  background: #6366f1;
+  background: var(--theme-color);
   color: white;
 }
 
@@ -277,7 +322,7 @@ h1 {
 }
 
 .filter-group select:focus {
-  border-color: #6366f1;
+  border-color: var(--theme-color);
 }
 
 /* Tasks */
