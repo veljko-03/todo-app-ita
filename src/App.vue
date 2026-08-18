@@ -11,7 +11,6 @@
 
       <AddTask @add-task="addTask" />
 
-      <!-- Filters -->
       <div class="filters">
         <div class="filter-group">
           <span class="filter-label">Status</span>
@@ -44,7 +43,6 @@
         </div>
       </div>
 
-      <!-- Task list -->
       <p v-if="filteredTasks.length === 0" class="no-tasks">No tasks available.</p>
 
       <div v-else class="todo-list">
@@ -74,26 +72,7 @@ export default {
 
   data() {
     return {
-      tasks: [
-        {
-          id: 1,
-          title: 'Call in sick',
-          completed: true,
-          priority: 'High',
-        },
-        {
-          id: 2,
-          title: 'Get ready for a party',
-          completed: false,
-          priority: 'Medium',
-        },
-        {
-          id: 3,
-          title: 'Grocery shopping',
-          completed: false,
-          priority: 'Low',
-        },
-      ],
+      tasks: this.loadTasks(),
 
       statusFilter: 'All',
       priorityFilter: 'All',
@@ -116,7 +95,45 @@ export default {
     },
   },
 
+  watch: {
+    tasks: {
+      handler(newTasks) {
+        localStorage.setItem('tasks', JSON.stringify(newTasks))
+      },
+      deep: true,
+    },
+  },
+
   methods: {
+    loadTasks() {
+      const savedTasks = localStorage.getItem('tasks')
+
+      if (savedTasks) {
+        return JSON.parse(savedTasks)
+      }
+
+      return [
+        {
+          id: 1,
+          title: 'Call in sick to work',
+          completed: true,
+          priority: 'High',
+        },
+        {
+          id: 2,
+          title: 'Get ready for a party',
+          completed: false,
+          priority: 'Medium',
+        },
+        {
+          id: 3,
+          title: 'Grocery shopping',
+          completed: false,
+          priority: 'Low',
+        },
+      ]
+    },
+
     addTask(task) {
       const newTask = {
         id: Date.now(),
